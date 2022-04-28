@@ -1,4 +1,0 @@
-//cria a tabela aluno na base de dados ada_api
-
-CREATE TABLE `ada_api`.`aluno` ( `id` VARCHAR NOT NULL , `nome` INT NOT NULL , `telefone` INT NOT NULL , `registroaluno` INT NOT NULL , PRIMARY KEY (`id`), UNIQUE `ra` (`registroaluno`(13))) ENGINE = MyISAM COMMENT = 'Esta tabela guardará os dados dos alunos';
-
