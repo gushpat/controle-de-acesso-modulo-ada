@@ -9,7 +9,7 @@ include './src/credentials/credentials.php';
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
 <title>Controle de Acesso - Módulo Ada</title>
 <meta charset="utf-8">
@@ -52,7 +52,7 @@ echo $sidenav;
       <br>O módulo de leitura rfid, enviará o código recebido pela tag,
       <br>que será comparado com este valor para verificar se o usuário está autorizado a acessar o sistema.
     </li>
-    <li><b>ativo</b>: indica se o usuário está ativo ou não</li>
+    <li><b>ativo</b>: indica se o usuário está ativo ou não.</li>
   </ul>
 
   <hr>
@@ -81,15 +81,76 @@ $sql = 'select * from usuario';
 $stmt = $pdo->prepare($sql); //prepara a query
 $stmt->execute(); //executa a query
 
-$projetos = $stmt->fetchAll(PDO::FETCH_ASSOC); //pega todos os dados da query e guarda em um array
+$consulta = $stmt->fetchAll(PDO::FETCH_ASSOC); //pega todos os dados da query e guarda em um array
+
+if ($consulta == null)
+{
+  echo "Nenhum resultado encontrado.";
+  echo "<br>";
+}
+
+else {
 
 echo '<table>';
 
-foreach($projetos as $projeto){ //percorre o array
+echo '<tr>
+  <th>Nome</th>
+  <th>Placa do Veículo</th>
+  <th>Descrição</th>
+  <th>Curso</th>
+</tr>';
+
+foreach($consulta as $projeto){ //percorre o array
+    
+ 
+    echo '<tr>';
+    echo '<td>'.$projeto['nome'].'</td>';
+    echo '<td>'.$projeto['placaVeiculo'].'</td>';
+    echo '<td>'.$projeto['descricaoVeiculo'].'</td>';
+    echo '<td>'.$projeto['curso'].'</td>';
+    echo '</tr>';
+
+    
+    
+}
+
+echo '</table>';
+
+}
+ ?>
+
+<h3>Consulta na tabela acesso </h3>
+  
+  <?php
+
+//não precisa criar a variavel pdo pois ela já foi criada na consulta anterior
+
+$sql = 'select * from acesso';
+
+$stmt = $pdo->prepare($sql); //prepara a query
+$stmt->execute(); //executa a query
+
+$consulta = $stmt->fetchAll(PDO::FETCH_ASSOC); //pega todos os dados da query e guarda em um array
+
+if ($consulta == null)
+{
+  echo "Nenhum resultado encontrado.";
+  echo "<br>";
+}
+
+else {
+
+
+echo '<table>';
+
+foreach($consulta as $projeto){ //percorre o array
     echo '<tr>';
     
-    echo '<td> Nome: '.$projeto['nome'].'</td>';
-    echo '<td> Placa do Veículo: '.$projeto['placaveiculo'].'</td>';
+    echo '<td> ID: '.$projeto['acessoID'].'</td>';
+    echo '<td> Usuario ID: '.$projeto['ususarioID'].'</td>';
+    echo '<td> Data de Acesso: '.$projeto['dataAcesso'].'</td>';
+    echo '<td> Ação: '.$projeto['acao'].'</td>';
+    
     
    
     echo '</tr>';
@@ -100,9 +161,55 @@ foreach($projetos as $projeto){ //percorre o array
 
 echo '</table>';
 
+}
+
+?>
 
 
- ?>
+<br>
+<hr>
+
+<h3>Utilizando a API do ADA</h3>
+
+<p>Para poder realizar qualquer ação dentro da api, você precisará de um token de acesso.</p>
+<details>
+    <summary>Clique aqui para visualizar o token!</summary>
+    204863
+</details>
+
+<br>
+
+<p>O token de acesso serve para que você possa realizar qualquer ação dentro da API,
+  <br>como por exemplo, cadastrar um novo usuário, ou atualizar um usuário já cadastrado.</p>
+
+<p> Caso o token não seja inserido na requisição, o sistema não permitirá que o usuário realizar qualquer ação.</p>
+
+<p> Por enquanto o token de acesso está sendo enviado pelo método GET, mas futuramente será enviado pelo método POST.</p>
+
+<h4> Criando um novo acesso </h4>
+
+<p> Para gerar um novo acesso na tabela <b>acesso</b> você deve seguir os seguintes passos:</p>
+<ul>
+<li> Acessar <b>ada/api/v1.0/api.php?token=""&usuarioid=""&dataacesso=""&acao=""</b> </li>
+<li> Informar o <b>token de acesso</b>, no caso "204863" </li>
+<li> Informar o <b>id do usuario</b>, no caso "1" </li>
+<li> Informar o <b>data de acesso</b></li>
+<li> Informar o <b>acao</b>, no caso "entrada" ou "saida" </li>
+
+<li> Ao preencher todos os parametros, a url ficará da seguinte maneira: 
+  <br><b>ada/api/v1.0/api.php?token=204863&usuarioid=1&dataacesso=2018-12-12&acao=entrada</b> </li>
+  <br>
+<li> No final, a API retornará um JSON com o resultado da operação.</li>
+<li> Caso o token de acesso não seja válido, a API retornará um JSON com a mensagem "Token inválido"</li>
+<li> Caso o usuário não exista, a API retornará um JSON com a mensagem "Usuário não existe"</li>
+<li> Caso o usuário já tenha feito a ação, a API retornará um JSON com a mensagem "Usuário já fez a ação"</li>
+<li> Caso o usuário não tenha feito a ação, a API retornará um JSON com a mensagem "Usuário não fez a ação"</li>
+
+
+
+</ul>
+
+
 
   
 </div>
