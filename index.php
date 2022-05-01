@@ -1,3 +1,10 @@
+<!-- 
+  Autor: Gustavo Patricio
+  Data de criação: 01/05/2022
+  Data de modificação: 01/05/2022
+  Versão: 0.01
+-->
+
 <?php
 //includes do projeto
 //importação do arquivo sidenav.php onde está o código html do menu lateral
@@ -5,6 +12,12 @@ include './src/sidenav.php';
 
 //importação do arquivo credentials.php onde estão as credenciais para conexão do banco de dados
 include './src/credentials/credentials.php';
+
+//include da classe de utilidades
+include './src/utils.php';
+
+//include rodapé
+include './src/footer.php';
 
 ?>
 
@@ -43,6 +56,7 @@ echo $sidenav;
   <ul>
     <li><b>usuarioID</b>: identificador do usuário, chave primária</li>
     <li><b>nome</b>: nome do usuário</li>
+    <li><b>RA</b>: Codigo do registro do aluno</li>
     <li><b>email</b>: email do usuário</li>
     <li><b>telefone</b>: telefone do usuário</li>
     <li><b>placaVeiculo</b>: placa do veículo do usuário</li>
@@ -74,7 +88,7 @@ echo $sidenav;
   
   <?php 
 
-$pdo = new PDO('mysql:host='.$servername.';dbname='.$dbname, $username, $password);
+
 
 $sql = 'select * from usuario';
 
@@ -94,21 +108,33 @@ else {
 echo '<table>';
 
 echo '<tr>
+  <th>ID</th>
   <th>Nome</th>
+  <th>RA</th>
   <th>Placa do Veículo</th>
   <th>Descrição</th>
   <th>Curso</th>
+  <th>Ativo</th>
 </tr>';
+
+$utils = new utils(); //instancia a classe utils
 
 foreach($consulta as $projeto){ //percorre o array
     
  
     echo '<tr>';
+    echo '<td>'.$projeto['usuarioID'].'</td>';
     echo '<td>'.$projeto['nome'].'</td>';
+    echo '<td>*********</td>';
     echo '<td>'.$projeto['placaVeiculo'].'</td>';
     echo '<td>'.$projeto['descricaoVeiculo'].'</td>';
     echo '<td>'.$projeto['curso'].'</td>';
+    echo '<td>'.$utils->ativoStatus($projeto['ativo']).'</td>';  //chama a função ativoStatus da classe utils, retornando uma string ao invés de um bool
     echo '</tr>';
+
+    
+    
+
 
     
     
@@ -184,14 +210,20 @@ echo '</table>';
 
 <p> Caso o token não seja inserido na requisição, o sistema não permitirá que o usuário realizar qualquer ação.</p>
 
-<p> Por enquanto o token de acesso está sendo enviado pelo método GET, mas futuramente será enviado pelo método POST.</p>
+<p> Por enquanto o token de acesso está sendo enviado pelo método GET, mas futuramente será enviado através do cabeçalho.</p>
 
-<h4> Criando um novo acesso </h4>
+<h4> Como funciona a API? </h4>
 
-<p> Para gerar um novo acesso na tabela <b>acesso</b> você deve seguir os seguintes passos:</p>
+<p> Explicando de uma maneira simples, o modulo que fará a leitura do sensor, irá enviar uma requisição para a API,
+  <br>que irá verificar se o código recebido pela tag rfid é válido e se o usuário está ativo. Caso seja válido e o usuário esteja ativo,
+  <br>o sistema irá retornar uma resposta com o status de sucesso, caso contrário, o sistema irá retornar uma resposta com o status de erro.
+  <br>baseado na resposta recebida pela api, o sistema irá liberar a catraca ou não.
+</p>
+
+
 <ul>
 <li> Acessar <b>ada/api/v1.0/api.php?token=""&usuarioid=""&dataacesso=""&acao=""</b> </li>
-<li> Informar o <b>token de acesso</b>, no caso "204863" </li>
+<li> Informar o <b>token de acesso</b></li>
 <li> Informar o <b>id do usuario</b>, no caso "1" </li>
 <li> Informar o <b>data de acesso</b></li>
 <li> Informar o <b>acao</b>, no caso "entrada" ou "saida" </li>
@@ -202,17 +234,21 @@ echo '</table>';
 <li> No final, a API retornará um JSON com o resultado da operação.</li>
 <li> Caso o token de acesso não seja válido, a API retornará um JSON com a mensagem "Token inválido"</li>
 <li> Caso o usuário não exista, a API retornará um JSON com a mensagem "Usuário não existe"</li>
-<li> Caso o usuário já tenha feito a ação, a API retornará um JSON com a mensagem "Usuário já fez a ação"</li>
-<li> Caso o usuário não tenha feito a ação, a API retornará um JSON com a mensagem "Usuário não fez a ação"</li>
+
 
 
 
 </ul>
 
 
-
+<?php
+echo $footer;
+?>
   
 </div>
+
+
+
 
 </body>
 </html>
