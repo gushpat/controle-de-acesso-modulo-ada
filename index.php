@@ -105,42 +105,46 @@ if ($consulta == null)
 
 else {
 
-echo '<table>';
 
-echo '<tr>
-  <th>ID</th>
-  <th>Nome</th>
-  <th>RA</th>
-  <th>Placa do Veículo</th>
-  <th>Descrição</th>
-  <th>Curso</th>
-  <th>Ativo</th>
-</tr>';
-
-$utils = new utils(); //instancia a classe utils
-
-foreach($consulta as $projeto){ //percorre o array
+echo   '<p>Para poder realizar qualquer ação dentro da api, você precisará de um token de acesso.</p>';
+echo '<details>';
+  echo  '<summary>Clique aqui para visualizar a tabela usuário!</summary>';
     
- 
-    echo '<tr>';
-    echo '<td>'.$projeto['usuarioID'].'</td>';
-    echo '<td>'.$projeto['nome'].'</td>';
-    echo '<td>*********</td>';
-    echo '<td>'.$projeto['placaVeiculo'].'</td>';
-    echo '<td>'.$projeto['descricaoVeiculo'].'</td>';
-    echo '<td>'.$projeto['curso'].'</td>';
-    echo '<td>'.$utils->ativoStatus($projeto['ativo']).'</td>';  //chama a função ativoStatus da classe utils, retornando uma string ao invés de um bool
-    echo '</tr>';
+  echo '<table>';
 
-    
-    
+  echo '<tr>
+    <th>ID</th>
+    <th>Nome</th>
+    <th>RA</th>
+    <th>Placa do Veículo</th>
+    <th>Descrição</th>
+    <th>Curso</th>
+    <th>Ativo</th>
+  </tr>';
+  
+  $utils = new utils(); //instancia a classe utils
+  
+  foreach($consulta as $projeto){ //percorre o array
+      
+   
+      echo '<tr>';
+      echo '<td>'.$projeto['usuarioID'].'</td>';
+      echo '<td>'.$projeto['nome'].'</td>';
+      echo '<td>'.$projeto['RA'].'</td>';
+      echo '<td>'.$projeto['placaVeiculo'].'</td>';
+      echo '<td>'.$projeto['descricaoVeiculo'].'</td>';
+      echo '<td>'.$projeto['curso'].'</td>';
+      echo '<td>'.$utils->ativoStatus($projeto['ativo']).'</td>';  //chama a função ativoStatus da classe utils, retornando uma string ao invés de um bool
+      echo '</tr>';
+  
+      
+  }
+  
+  echo '</table>';
+
+echo '</details>';
 
 
-    
-    
-}
-
-echo '</table>';
 
 }
  ?>
@@ -166,19 +170,28 @@ if ($consulta == null)
 
 else {
 
+  echo   '<p>Para poder realizar qualquer ação dentro da api, você precisará de um token de acesso.</p>';
+echo '<details>';
+  echo  '<summary>Clique aqui para visualizar a tabela acesso!</summary>';
+
 
 echo '<table>';
 
+echo '<tr>
+  <th>ID</th>
+  <th>Usuario ID</th>
+  <th>Data de Acesso</th>
+  <th>Ação</th>
+</tr>';
+
 foreach($consulta as $projeto){ //percorre o array
+    
+  
     echo '<tr>';
-    
-    echo '<td> ID: '.$projeto['acessoID'].'</td>';
-    echo '<td> Usuario ID: '.$projeto['ususarioID'].'</td>';
-    echo '<td> Data de Acesso: '.$projeto['dataAcesso'].'</td>';
-    echo '<td> Ação: '.$projeto['acao'].'</td>';
-    
-    
-   
+    echo '<td>'.$projeto['acessoID'].'</td>';
+    echo '<td>'.$projeto['usuarioID'].'</td>';
+    echo '<td>'.$projeto['dataAcesso'].'</td>';
+    echo '<td>'.$utils->acaoStatus($projeto['acao']).'</td>';
     echo '</tr>';
 
     
@@ -186,6 +199,8 @@ foreach($consulta as $projeto){ //percorre o array
 }
 
 echo '</table>';
+
+echo '</details>';
 
 }
 
@@ -200,7 +215,7 @@ echo '</table>';
 <p>Para poder realizar qualquer ação dentro da api, você precisará de um token de acesso.</p>
 <details>
     <summary>Clique aqui para visualizar o token!</summary>
-    204863
+    <p>204863</p>
 </details>
 
 <br>
