@@ -55,9 +55,9 @@ echo $sidenav;
   <h3>Tabela Usuário</h3>
   <p>A tabela usuário possui os seguintes campos:</p>
   <ul>
-    <li><b>usuarioID</b>: identificador do usuário, chave primária</li>
+    <li><b>usuarioID (PK)</b>: identificador do usuário, chave primária</li>
     <li><b>nome</b>: nome do usuário</li>
-    <li><b>RA</b>: Codigo do registro do aluno</li>
+    <li><b>RA (UK)</b>: Codigo do registro do aluno</li>
     <li><b>email</b>: email do usuário</li>
     <li><b>telefone</b>: telefone do usuário</li>
     <li><b>placaVeiculo</b>: placa do veículo do usuário</li>
@@ -75,8 +75,8 @@ echo $sidenav;
   <h3>Tabela Acesso</h3>
   <p>A tabela acesso possui os seguintes campos:</p>
   <ul>
-    <li><b>acessoID</b>: identificador do acesso, chave primária</li>
-    <li><b>usuarioID</b>: identificador do usuário, chave estrangeira da tabela usuario</li>
+    <li><b>acessoID (PK)</b>: identificador do acesso, chave primária</li>
+    <li><b>usuarioID (FK)</b>: identificador do usuário, chave estrangeira da tabela usuario</li>
     <li><b>dataAcesso</b>: data e hora do acesso</li>
     <li><b>acao</b>: define se o usuário está entrando ou saindo da instituíção. Exemplo:
       <br>o leitor presente na entrada definiria a ação apenas como entrada e o 
@@ -115,8 +115,8 @@ echo '<details>';
 
   echo '<tr>
     <th>ID</th>
-    <th>Nome</th>
-    <th>RA</th>
+    <th>Nome do Usuário</th>
+    <th>Registro do Aluno</th>
     <th>Placa do Veículo</th>
     <th>Descrição</th>
     <th>Curso</th>
@@ -156,9 +156,14 @@ echo '</details>';
   
   <?php
 
-//não precisa criar a variavel pdo pois ela já foi criada na consulta anterior
+//não precisa criar a variavel pdo pois ela já foi criada no arquivo credenciais.php
 
-$sql = 'select * from acesso';
+$sql = '
+SELECT acesso.acessoID, acesso.dataAcesso, acesso.acao, usuario.nome, usuario.RA 
+FROM acesso 
+INNER JOIN usuario 
+ON acesso.usuarioID = usuario.usuarioID
+ORDER BY acesso.acessoID ASC';
 
 $stmt = $pdo->prepare($sql); //prepara a query
 $stmt->execute(); //executa a query
@@ -182,7 +187,8 @@ echo '<table>';
 
 echo '<tr>
   <th>ID</th>
-  <th>Usuario ID</th>
+  <th>Nome do Usuário</th>
+  <th>Registro do Aluno</th>
   <th>Data de Acesso</th>
   <th>Ação</th>
 </tr>';
@@ -192,8 +198,10 @@ foreach($consulta as $projeto){ //percorre o array
   
     echo '<tr>';
     echo '<td>'.$projeto['acessoID'].'</td>';
-    echo '<td>'.$projeto['usuarioID'].'</td>';
-    echo '<td>'.$projeto['dataAcesso'].'</td>';
+  //  echo '<td>'.$projeto['usuarioID'].'</td>';
+    echo '<td>'.$projeto['nome'].'</td>';
+    echo '<td>'.$projeto['RA'].'</td>';
+    echo '<td>'.$utils->formatDate($projeto['dataAcesso']).'</td>';
     echo '<td>'.$utils->acaoStatus($projeto['acao']).'</td>';
     echo '</tr>';
 
@@ -223,11 +231,11 @@ echo '</details>';
     <br>
     <br>
     <label for="acao">Escolha a ação:</label>
-
-<select id="acao">
-    <option value='1'>Entrada</option>
-    <option value='0'>Saida</option>
-</select>
+<br>
+    <input type="radio" id="acao" name="acao" value="1">
+  <label for="acao">Entrada</label><br>
+  <input type="radio" id="acao" name="acao" value="0">
+  <label for="acao">Saída</label><br>
     <br>
     <br>
     <input type="submit" value="Registrar novo acesso">
@@ -253,8 +261,6 @@ echo '</details>';
 
 <p> Caso o token não seja inserido na requisição, o sistema não permitirá que o usuário realizar qualquer ação.</p>
 
-<p> Por enquanto o token de acesso está sendo enviado pelo método GET, mas futuramente será enviado através do cabeçalho.</p>
-
 <h4> Como funciona a API? </h4>
 
 <p> Explicando de uma maneira simples, o modulo que fará a leitura do sensor, irá enviar uma requisição para a API,
@@ -265,20 +271,17 @@ echo '</details>';
 
 
 <ul>
-<li> Acessar <b>ada/api/v1.0/api.php?token=""&usuarioid=""&dataacesso=""&acao=""</b> </li>
+<li> Acessar <b>ada/api/v1.0/api.php?token=""&usuarioid=""&acao=""</b> </li>
 <li> Informar o <b>token de acesso</b></li>
-<li> Informar o <b>id do usuario</b>, no caso "1" </li>
-<li> Informar o <b>data de acesso</b></li>
-<li> Informar o <b>acao</b>, no caso "entrada" ou "saida" </li>
+<li> Informar o <b>id do usuario</b></li>
+<li> Informar o <b>acao</b>, no caso 1 para "entrada" ou 0 para "saida" </li>
 
 <li> Ao preencher todos os parametros, a url ficará da seguinte maneira: 
-  <br><b>ada/api/v1.0/api.php?token=204863&usuarioid=1&dataacesso=2018-12-12&acao=entrada</b> </li>
+  <br><b>ada/api/v1/api.php?token="204863"&usuarioid=1&dataacesso="2022-05-04 22:21:32"&acao="1"</b> </li>
   <br>
 <li> No final, a API retornará um JSON com o resultado da operação.</li>
 <li> Caso o token de acesso não seja válido, a API retornará um JSON com a mensagem "Token inválido"</li>
 <li> Caso o usuário não exista, a API retornará um JSON com a mensagem "Usuário não existe"</li>
-
-
 
 
 </ul>
