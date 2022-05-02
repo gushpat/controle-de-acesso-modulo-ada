@@ -1,9 +1,4 @@
-<!-- 
-  Autor: Gustavo Patricio
-  Data de criação: 01/05/2022
-  Data de modificação: 01/05/2022
-  Versão: 0.01
--->
+
 <?php
 class utils
 {
@@ -31,9 +26,14 @@ function acaoStatus($ativo) //função que recebe um bool e retorna seu valor em
     {
         return 'Entrada';
     }
-} 
+}
 
+function formatDate($date) //função que recebe uma data no formato YYYY-MM-DD e retorna no formato DD/MM/YYYY
+{
+    $date = explode('-', $date);
+    return $date[2].'/'.$date[1].'/'.$date[0];
 
+}
 
 
 }
