@@ -34,14 +34,13 @@ if(!empty($_POST['tagID'])) //se tagID não é nulo
                 }
                 else
                 {
-
+                    date_default_timezone_set('America/Sao_Paulo'); //define o timezone
                     $data = date("Y-m-d H:i:s"); //pega a data e hora atual
-                    //echo "Data e hora atual: ".$data;
-                    //echo $_POST['acao'];
-                    //echo $row['usuarioID'];
+
+                   
                     //2022-05-02 13:37:17
 
-                    $acao = 1;
+                    $acao = $_POST['acao'];
 
                     //se o usuario estiver ativo, registra o acesso
                     $sql = 'insert into acesso (acessoID, usuarioID, dataAcesso, acao) values (NULL, :usuarioID, :dataAcesso, :acao)'; //query para registrar o acesso
@@ -52,6 +51,12 @@ if(!empty($_POST['tagID'])) //se tagID não é nulo
                     $stmt->execute(); //executa a query
 
                     //echo "Registro de acesso realizado com sucesso!";
+
+                    // echo "Data e hora atual: ".$data;
+                    // echo "<br>";
+                    // echo "Ação: ".$_POST['acao'];
+                    // echo "<br>";
+                    // echo "Usuario ID: ".$row['usuarioID'];
                     header("Location: ../../index.php"); //redireciona para a página de login
                 }
 
