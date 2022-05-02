@@ -21,6 +21,21 @@ class utils
 } 
 
 
+function acaoStatus($ativo) //função que recebe um bool e retorna seu valor em string
+{
+    if ($ativo == 0)
+    {
+        return 'Saída';
+    }
+    else
+    {
+        return 'Entrada';
+    }
+} 
+
+
+
+
 }
 
 ?>
