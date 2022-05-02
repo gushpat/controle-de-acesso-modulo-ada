@@ -7,6 +7,7 @@
 
 <?php
 //includes do projeto
+
 //importação do arquivo sidenav.php onde está o código html do menu lateral
 include './src/sidenav.php';
 
@@ -106,7 +107,7 @@ if ($consulta == null)
 else {
 
 
-echo   '<p>Para poder realizar qualquer ação dentro da api, você precisará de um token de acesso.</p>';
+
 echo '<details>';
   echo  '<summary>Clique aqui para visualizar a tabela usuário!</summary>';
     
@@ -119,6 +120,7 @@ echo '<details>';
     <th>Placa do Veículo</th>
     <th>Descrição</th>
     <th>Curso</th>
+    <th>Tag ID</th>
     <th>Ativo</th>
   </tr>';
   
@@ -134,6 +136,7 @@ echo '<details>';
       echo '<td>'.$projeto['placaVeiculo'].'</td>';
       echo '<td>'.$projeto['descricaoVeiculo'].'</td>';
       echo '<td>'.$projeto['curso'].'</td>';
+      echo '<td>'.$projeto['tagID'].'</td>';
       echo '<td>'.$utils->ativoStatus($projeto['ativo']).'</td>';  //chama a função ativoStatus da classe utils, retornando uma string ao invés de um bool
       echo '</tr>';
   
@@ -170,7 +173,7 @@ if ($consulta == null)
 
 else {
 
-  echo   '<p>Para poder realizar qualquer ação dentro da api, você precisará de um token de acesso.</p>';
+  
 echo '<details>';
   echo  '<summary>Clique aqui para visualizar a tabela acesso!</summary>';
 
@@ -208,6 +211,31 @@ echo '</details>';
 
 
 <br>
+<hr>
+
+<h3>Registrando Acesso</h3>
+<p>Para registrar o acesso, preencha os campos abaixo e clique no botão.</p>
+
+<div class="container">
+  <form action="./src/validate/validateacess.php" method="POST">
+    <label for="fid">Tag ID</label>
+    <input type="text" id="tagID" name="tagID" placeholder="id">
+    <br>
+    <br>
+    <label for="acao">Escolha a ação:</label>
+
+<select id="acao">
+    <option value='1'>Entrada</option>
+    <option value='0'>Saida</option>
+</select>
+    <br>
+    <br>
+    <input type="submit" value="Registrar novo acesso">
+  </form>
+</div>
+
+
+
 <hr>
 
 <h3>Utilizando a API do ADA</h3>
