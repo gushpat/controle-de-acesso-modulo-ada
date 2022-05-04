@@ -26,7 +26,6 @@ class API{
             exit(0);
         }
         
-        //echo "You have CORS!";
     }
 
     function registraAcesso(){
@@ -114,12 +113,8 @@ class API{
 
         //Criação do array de retorno em json 
 
-        $retorno["Response"][] = array('code' => $code);
-        echo json_encode($retorno);
-
-
-       
-
+        $response["Response"][] = array('code' => $code);
+        return json_encode($response);
 
     }//function
 
@@ -127,15 +122,9 @@ class API{
 } //api
 
 $API = new API; //instancia a classe API
-
 echo $API->cors(); //executa a função responsável por permitir o acesso a API
-
-//echo $API->registraLog(); //executa a função responsável por registrar o log
-
 header('Content-Type: application/json; charset=utf-8'); //define o tipo de conteúdo que será retornado
-
 echo $API->registraAcesso(); //executa a função responsável por selecionar os dados do banco de dados
-
 die; //encerra a execução do script
 
 
