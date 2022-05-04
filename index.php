@@ -91,7 +91,7 @@ echo $sidenav;
 
 
 
-$sql = 'select * from usuario';
+$sql = 'SELECT * FROM usuario';
 
 $stmt = $pdo->prepare($sql); //prepara a query
 $stmt->execute(); //executa a query
@@ -158,8 +158,8 @@ echo '</details>';
 
 //não precisa criar a variavel pdo pois ela já foi criada no arquivo credenciais.php
 
-$sql = '
-SELECT acesso.acessoID, acesso.dataAcesso, acesso.acao, usuario.nome, usuario.RA 
+$sql =
+'SELECT acesso.acessoID, acesso.dataAcesso, acesso.acao, usuario.nome, usuario.RA 
 FROM acesso 
 INNER JOIN usuario 
 ON acesso.usuarioID = usuario.usuarioID
@@ -251,7 +251,7 @@ echo '</details>';
 <p>Para poder realizar qualquer ação dentro da api, você precisará de um token de acesso.</p>
 <details>
     <summary>Clique aqui para visualizar o token!</summary>
-    <p>204863</p>
+    <p>iP75MYyoNQ4bKkgDmPa3tThPCtAtQ0OB6xAQUy</p>
 </details>
 
 <br>
@@ -271,26 +271,41 @@ echo '</details>';
 
 
 <ul>
-<li> Acessar <b>ada/api/v1.0/api.php?token=""&usuarioid=""&acao=""</b> </li>
+<li> Acessar <b>ada/api/v1.0/api.php?token=<mark>###</mark>&tagid=<mark>###</mark>&acao=<mark>###</mark></b> </li>
 <li> Informar o <b>token de acesso</b></li>
-<li> Informar o <b>id do usuario</b></li>
+<li> Informar o <b>id da tag do usuario</b></li>
 <li> Informar o <b>acao</b>, no caso 1 para "entrada" ou 0 para "saida" </li>
 
 <li> Ao preencher todos os parametros, a url ficará da seguinte maneira: 
-  <br><b>ada/api/v1/api.php?token="204863"&usuarioid=1&dataacesso="2022-05-04 22:21:32"&acao="1"</b> </li>
+  <br><mark><b>http://ada/api/v1/api.php?token=iP75MYyoNQ4bKkgDmPa3tThPCtAtQ0OB6xAQUy&tagid=123456&acao=1"</b></mark> </li>
   <br>
-<li> No final, a API retornará um JSON com o resultado da operação.</li>
-<li> Caso o token de acesso não seja válido, a API retornará um JSON com a mensagem "Token inválido"</li>
-<li> Caso o usuário não exista, a API retornará um JSON com a mensagem "Usuário não existe"</li>
-
-
 </ul>
+
+<p> Ao final, a API retornará um JSON com um código como resultado da operação.</p>
+
+  <ul>
+    <li><mark><b>Code 109</b>: Registro de acesso realizado com sucesso!</mark></li>
+    <li><b>Code 502</b>: Usuário desativado. Não é possível registrar o acesso</li>
+    <li><b>Code 503</b>: Usuário não encontrado!</li>
+    <li><b>Code 504</b>: Tag ID não pôde ser obtida! Tente novamente.</li>
+    <li><b>Code 505</b>: Erro na chave da API </li>
+    
+    
+    
+  </ul>
+  <hr>
+  <p> Os erros 502 e 503 serão os erros mais comuns no produto final</p>
+  <p> Exemplo 502: O cadastro do aluno foi desativado pelo administrador pois não houve a renovação no inicio do semestre.</p>
+  <p> Exemplo 503: O usuário não foi encontrado no sistema. </p>
+
+  <hr>
+
 
 
 <?php
 echo $footer;
 ?>
-  
+ <hr> 
 </div>
 
 
