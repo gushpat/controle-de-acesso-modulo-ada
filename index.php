@@ -48,6 +48,8 @@ echo $sidenav;
   <p>Bem vindo ao protótipo do sistema de controle de acesso.</p>
   <p>Utilize as opções ao lado para navegar pelo sistema.</p>
 
+  <p><mark>ESTA TELA É APENAS PARA TESTES E NÃO REPRESENTA A APARÊNCIA FINAL DO SISTEMA</mark></p>
+
   <hr>
 
   <p>O atualmente o sistema possui 2 tabelas: usuário e acesso</p>
@@ -58,11 +60,7 @@ echo $sidenav;
     <li><b>usuarioID (PK)</b>: identificador do usuário, chave primária</li>
     <li><b>nome</b>: nome do usuário</li>
     <li><b>RA (UK)</b>: Codigo do registro do aluno</li>
-    <li><b>email</b>: email do usuário</li>
-    <li><b>telefone</b>: telefone do usuário</li>
     <li><b>placaVeiculo</b>: placa do veículo do usuário</li>
-    <li><b>descricaoVeiculo</b>: uma descricao do veículo</li>
-    <li><b>curso</b>: curso do usuário</li>
     <li><b>tagID</b>: sequencia numerica presente na tag rfid.
       <br>O módulo de leitura rfid, enviará o código recebido pela tag,
       <br>que será comparado com este valor para verificar se o usuário está autorizado a acessar o sistema.
@@ -118,8 +116,6 @@ echo '<details>';
     <th>Nome do Usuário</th>
     <th>Registro do Aluno</th>
     <th>Placa do Veículo</th>
-    <th>Descrição</th>
-    <th>Curso</th>
     <th>Tag ID</th>
     <th>Ativo</th>
   </tr>';
@@ -134,8 +130,6 @@ echo '<details>';
       echo '<td>'.$projeto['nome'].'</td>';
       echo '<td>'.$projeto['RA'].'</td>';
       echo '<td>'.$projeto['placaVeiculo'].'</td>';
-      echo '<td>'.$projeto['descricaoVeiculo'].'</td>';
-      echo '<td>'.$projeto['curso'].'</td>';
       echo '<td>'.$projeto['tagID'].'</td>';
       echo '<td>'.$utils->ativoStatus($projeto['ativo']).'</td>';  //chama a função ativoStatus da classe utils, retornando uma string ao invés de um bool
       echo '</tr>';
@@ -271,7 +265,7 @@ echo '</details>';
 
 
 <ul>
-<li> Acessar <b>ada/api/v1.0/api.php?token=<mark>###</mark>&tagid=<mark>###</mark>&acao=<mark>###</mark></b> </li>
+<li> Acessar <b><mark>ada</mark>/api/v1.0/api.php?token=<mark>###</mark>&tagid=<mark>###</mark>&acao=<mark>###</mark></b> </li>
 <li> Informar o <b>token de acesso</b></li>
 <li> Informar o <b>id da tag do usuario</b></li>
 <li> Informar o <b>acao</b>, no caso 1 para "entrada" ou 0 para "saida" </li>
